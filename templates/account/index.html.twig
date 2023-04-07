@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block body %}
+    <h1>Welcome to your account, {{ user.pseudo }}!</h1>
+
+    <p>Here are your account details:</p>
+
+    <ul>
+        <li>Username: {{ user.pseudo }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>Adresses:</li>
+        <a href="{{ path('account_address_new') }}">Ajouter une adresse</a>
+        {% for address in addresses %}
+            <div>
+                <div> {{address.street}} </div>
+                <div> {{address.zip}} </div>
+                <div> {{address.city}} </div>
+                <a href="{{ path('account_address_update', {"address": address.id}) }}">Modifier</a>
+                <form action="{{ path('account_address_delete', {"address": address.id}) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ address.id) }}">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </div>
+        {% endfor %}
+        <!-- Ajouter d'autres informations du compte ici -->
+    </ul>
+    <div>Mon portefeuille : {{user.wallet.amount}}</div>
+    <a href="{{ path('account_wallet_new') }}">Ajouter de l'argent</a>
+{% endblock %}

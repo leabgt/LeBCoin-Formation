@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $addresses;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Bank $bank;
+    private ?Wallet $wallet = null;
 
     public function __construct()
     {
@@ -259,24 +259,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBank(): ?Bank
+    public function getWallet(): ?Wallet
     {
-        return $this->bank;
+        return $this->wallet;
     }
 
-    public function setBank(?Bank $bank): self
+    public function setWallet(?Wallet $wallet): self
     {
         // unset the owning side of the relation if necessary
-        if ($bank === null && $this->bank !== null) {
-            $this->bank->setUser(null);
+        if ($wallet === null && $this->wallet !== null) {
+            $this->wallet->setUser(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($bank !== null && $bank->getUser() !== $this) {
-            $bank->setUser($this);
+        if ($wallet !== null && $wallet->getUser() !== $this) {
+            $wallet->setUser($this);
         }
 
-        $this->bank = $bank;
+        $this->wallet = $wallet;
 
         return $this;
     }

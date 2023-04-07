@@ -2,22 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\BankRepository;
+use App\Repository\WalletRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BankRepository::class)]
-class Bank
+#[ORM\Entity(repositoryClass: WalletRepository::class)]
+class Wallet
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $amount = null;
 
-    #[ORM\OneToOne(inversedBy: 'bank', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'wallet', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -30,7 +30,7 @@ class Bank
         return $this->amount;
     }
 
-    public function setAmount(string $amount): self
+    public function setAmount(?string $amount): self
     {
         $this->amount = $amount;
 

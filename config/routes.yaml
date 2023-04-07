@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+delete_address:
+    path: /account/address/delete/{id}
+    methods: [DELETE, POST]
+    controller: App\Controller\AccountController::delete

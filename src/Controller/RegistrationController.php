@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Wallet;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,11 +31,15 @@ class RegistrationController extends AbstractController
                 ), 
             ); 
 
-            dd($user); 
-
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+
+            $wallet = new Wallet();
+            $wallet->setAmount(100);
+            $user->setWallet($wallet);
+            
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_home');
         }
