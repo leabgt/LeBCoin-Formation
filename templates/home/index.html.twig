@@ -7,4 +7,12 @@
     <div><a href="{{ path('app_login') }}">LogIn</a></div>
     <div><a href="{{ path('account') }}">Mon compte</a></div>
 </div>
+
+{% for annonce in annonces %}
+        <div>
+            <div> <a href="{{ path('app_annonce_id', {"annonce": annonce.id}) }}">{{annonce.name}}</a> </div>
+            <div> {{annonce.description}} </div>
+            <div> {{annonce.price}} </div>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -1,0 +1,23 @@
+{% block body %}
+    <div>
+        <h1>{{ annonce.name }}</h1>
+        <div> {{ annonce.description }} </div>
+        <div> {{ annonce.price }} </div>
+    </div>
+    {% if user %}
+        <div> {{form(form)}} </div>
+    {% endif %}
+    {% for commentary in commentaries %}
+        <div>
+            <div> {{commentary.text}} </div>
+            <div> {{commentary.user.pseudo}} </div>
+        </div>
+    {% endfor %}
+    {% if user %}
+        <div> <a href="{{ path('app_acquisition') }}" </div>
+    {% else %}
+        <div> <a href="{{ path('app_login') }}">LogIn</a> </div>
+    {% endif %}
+
+    {# {{form(acquisitionform)}} #}
+{% endblock %}

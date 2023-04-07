@@ -1,0 +1,24 @@
+{% block body %}
+    <div>
+        <h1>{{ acquisition.id }}</h1>
+        <h1>{{ acquisition.user.pseudo }}</h1>
+        <li>Adresses:</li>
+        {% if addresses %}
+            {% for address in addresses %}
+                <div>
+                    <div> {{address.street}} </div>
+                    <div> {{address.zip}} </div>
+                    <div> {{address.city}} </div>
+                    {# <a href="{{ path('account_address_update', {"address": address.id}) }}">Modifier</a> #}
+                    {# <form action="{{ path('account_address_delete', {"address": address.id}) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ address.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form> #}
+                </div>
+            {% endfor %}
+        {% else %}
+            <a href="{{ path('account_address_new') }}">Ajouter une adresse</a>
+        {% endif %}
+    </div>
+{% endblock %}

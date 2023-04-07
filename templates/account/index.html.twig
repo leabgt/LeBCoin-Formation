@@ -28,5 +28,20 @@
         <!-- Ajouter d'autres informations du compte ici -->
     </ul>
     <div>Mon portefeuille : {{user.wallet.amount}}</div>
-    <a href="{{ path('account_wallet_new') }}">Ajouter de l'argent</a>
+    <div><a href="{{ path('account_wallet_new') }}">Ajouter de l'argent</a></div>
+
+    <div><a href="{{ path('account_annonce_new') }}">Ajouter une annonce</a></div>
+    {% for annonce in annonces %}
+        <div>
+            <div> {{annonce.name}} </div>
+            <div> {{annonce.description}} </div>
+            <div> {{annonce.price}} </div>
+            {% if annonce.isVisible %}
+                <p>L'annonce est visible.</p>
+            {% else %}
+                <p>L'annonce est masquée.</p>
+            {% endif %}
+            <a href="{{ path('annonce_toggle_visibility', {'annonce': annonce.id}) }}">Changer la visibilité</a>
+        </div>
+    {% endfor %}
 {% endblock %}

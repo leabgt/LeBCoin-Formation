@@ -9,8 +9,11 @@ use App\Entity\Annonce;
 
 use App\Form\AddressType;
 use App\Form\WalletType; 
+use App\Form\AnnonceType; 
 
 use App\Repository\UserRepository;
+use App\Repository\AnnonceRepository; 
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,11 +48,13 @@ class AccountController extends AbstractController
         $user = $userRepository->find($this->getUser());
         $addresses = $user->getAddresses(); 
         $wallet = $user->getWallet(); 
+        $annonces = $user->getAnnonces(); 
 
         return $this->render('account/index.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
-            'wallet' => $wallet, 
+            'wallet' => $wallet,
+            'annonces' => $annonces,  
         ]);
     }
 
@@ -87,7 +92,7 @@ class AccountController extends AbstractController
      * @param Request $request
      * @return Response
     */
-    #[Route('/backoffice/address/update/{address}', name: 'account_address_update')]
+    #[Route('/account/address/update/{address}', name: 'account_address_update')]
     public function updateAddress(UserRepository $userRepository, Address $address, Request $request): Response
     {
         $form = $this->createForm(AddressType::class, $address);
@@ -169,7 +174,7 @@ class AccountController extends AbstractController
     public function newAnnonce(UserRepository $userRepository, Request $request)
     {
         $annonce = new Annonce();
-        $form = $this->createForm(AddressType::class, $annonce);
+        $form = $this->createForm(AnnonceType::class, $annonce);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -183,8 +188,30 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('account');
         }
 
-        return $this->render('account/address_new.html.twig', [
+        return $this->render('account/annonce_new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param UserRepository $userRepository
+     * @param Annonce $annonce
+     * @param Request $request
+     * @return Response
+    */
+    #[Route('/account/annonce/{annonce}/toogle_visibility', name: 'annonce_toggle_visibility')]
+    public function toggleVisibility(UserRepository $userRepository, Annonce $annonce, Request $request): Response
+    {        
+        $isVisible = $annonce->isIsVisible(); 
+        $annonce->setIsVisible(!$isVisible); 
+        
+        $this->em->persist($annonce);
+        $this->em->flush();
+        
+        return $this->redirectToRoute('account');
+
+        // return $this->render('account/index.html.twig', [
+        //     'form' => $form->createView()
+        // ]);
     }
 }
